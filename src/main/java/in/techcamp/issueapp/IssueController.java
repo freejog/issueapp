@@ -33,6 +33,6 @@ public class IssueController {
     public String issueList(Model model) {
         var issueList = issueRepository.findAll();
         model.addAttribute("issueList", issueList);
-        return "index"
+        return "index";
     }
 }
