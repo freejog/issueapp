@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class IssueController {
 
     private final IssueRepository issueRepository;
+
     @GetMapping("/issueForm")
     public String showIssueForm(@ModelAttribute("issueForm") IssueForm form){
         return "issueForm";
@@ -31,7 +32,7 @@ public class IssueController {
     }
 
     @GetMapping
-    public String issueList(Model model) {
+    public String showIssues(Model model) {
         var issueList = issueRepository.findAll();
         model.addAttribute("issueList", issueList);
         return "index";
@@ -41,6 +42,12 @@ public class IssueController {
     public String issueDetail(@PathVariable long id, Model model){
         var issue = issueRepository.findById(id);
         model.addAttribute("issue", issue);
-        return  "detail";
+        return "detail";
+    }
+
+    @PostMapping("/issues/{id}/update")
+    public String updateIssue(@PathVariable long id, IssueForm issueForm){
+        issueRepository.update(id, issueForm.getTitle(), issueForm.getContent(), issueForm.getPeriod(), issueForm.getImportance());
+        return "redirect:/";
     }
 }
